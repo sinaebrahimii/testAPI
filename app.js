@@ -19,7 +19,7 @@ app.get("/meow", (req, res) => {
 app.post("/", (req, res) => {
   const data = req.body;
   console.log(data);
-  res.status(201).json(data);
+  res.status(201).send("data recived successfuly!");
 });
 
 const port = 3000;

@@ -1,26 +1,29 @@
 const express = require("express");
+const cors = require("cors");
+const Micro = require("./micro");
 const app = express();
+app.use(cors());
 app.use(express.json());
-app.get("/", (req, res) => {
-  res.status(200).json({
-    status: "success",
-    message: {
-      isHasanSexy: true,
-      meow: "meowwwwwww",
-      bestSize: 75,
-    },
-  });
+app.get("/", async (req, res) => {
+  try {
+    const data = await Micro.findById("64cd3901145c625a7b252a6d");
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(404).json(err);
+  }
 });
-app.get("/meow", (req, res) => {
-  res.status(200).json({
-    message: "asal mani ishalla qorboonet beram mashala",
-  });
+app.put("/", async (req, res) => {
+  try {
+    const data = await Micro.findByIdAndUpdate(
+      "64cd3901145c625a7b252a6d",
+      req.body,
+      {
+        new: true,
+      }
+    );
+    res.status(201).json(data);
+  } catch (err) {
+    res.status(404).json(err);
+  }
 });
-app.post("/", (req, res) => {
-  const data = req.body;
-  console.log(data);
-  res.status(201).send("data recived successfuly!");
-});
-
-const port = 3000;
-app.listen(port, () => console.log(`app is up and running on port ${port}`));
+module.exports = app;
